@@ -1,0 +1,638 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Interview Practice Flashcards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%);
+            margin: 0;
+            padding: 5px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 95vw;
+            width: 95%;
+            min-height: 90vh;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .header-section {
+            flex-shrink: 0;
+        }
+        
+        .content-section {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .footer-section {
+            flex-shrink: 0;
+        }
+        
+        .logo {
+            margin-bottom: 10px;
+        }
+        
+        .wing {
+            color: #ff6b6b;
+            font-weight: 800;
+            font-size: 1.8em;
+            letter-spacing: 1px;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .sky {
+            color: #4ecdc4;
+            font-weight: 800;
+            font-size: 1.8em;
+            letter-spacing: 1px;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .class-title {
+            font-size: 1.1em;
+            color: #28a745;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 15px;
+            margin-top: 5px;
+            font-size: 2.2em;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .topic-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .topic-button {
+            background: linear-gradient(45deg, #6c757d, #495057);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        
+        .topic-button.active {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            transform: scale(1.05);
+        }
+        
+        .topic-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .flashcard {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px 25px;
+            margin: 20px 0;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-left: 5px solid #ff6b6b;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            perspective: 1000px;
+        }
+        
+        .flashcard:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .flashcard.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .card-back {
+            transform: rotateY(180deg);
+        }
+        
+        .question-number {
+            font-size: 1.1em;
+            color: #ff6b6b;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: #fff2f2;
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 2px solid #ff6b6b;
+        }
+        
+        .question-text {
+            font-size: 1.2em;
+            color: #333;
+            line-height: 1.6;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .answer-text {
+            font-size: 1.1em;
+            color: #555;
+            line-height: 1.7;
+            font-weight: 500;
+            text-align: left;
+            background: #e8f5e8;
+            border-left: 4px solid #28a745;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 100%;
+        }
+        
+        .flip-hint {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 0.8em;
+            color: #999;
+            font-style: italic;
+        }
+        
+        .placeholder-text {
+            color: #999;
+            font-style: italic;
+            font-size: 1.3em;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .button {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 30px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            min-width: 120px;
+        }
+        
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.3);
+        }
+        
+        .button:active {
+            transform: translateY(0);
+        }
+        
+        .button:disabled {
+            background: linear-gradient(45deg, #ccc, #999);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .previous-button {
+            background: linear-gradient(45deg, #6f42c1, #9c88ff);
+        }
+        
+        .reset-button {
+            background: linear-gradient(45deg, #6c757d, #495057);
+        }
+        
+        .stats {
+            margin-top: 15px;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+                min-height: 85vh;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .flashcard {
+                padding: 20px 15px;
+                min-height: 350px;
+                margin: 15px 0;
+            }
+            
+            .question-text {
+                font-size: 1.1em;
+            }
+            
+            .answer-text {
+                font-size: 1em;
+                padding: 15px;
+            }
+            
+            .button {
+                padding: 12px 20px;
+                font-size: 0.9em;
+                min-width: 100px;
+            }
+            
+            .topic-button {
+                padding: 8px 15px;
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-section">
+            <div class="logo">
+                <span class="wing">WING</span> <span class="sky">SKY</span>
+            </div>
+            <div class="class-title">Sophie's Class</div>
+            <h1>🎴 Advanced Interview Practice</h1>
+            
+            <div class="topic-selector">
+                <button class="topic-button active" onclick="selectTopic('family')">Family & Life</button>
+                <button class="topic-button" onclick="selectTopic('major')">Major & School</button>
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <div class="flashcard" id="flashcard" onclick="flipCard()">
+                <div class="card-inner" id="cardInner">
+                    <div class="card-front">
+                        <div class="placeholder-text">Select a topic and click "Next" to start!</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="placeholder-text">Click the card to flip!</div>
+                    </div>
+                </div>
+                <div class="flip-hint">Click to flip</div>
+            </div>
+        </div>
+        
+        <div class="footer-section">
+            <div class="button-container">
+                <button class="button previous-button" id="previousButton" onclick="showPrevious()" disabled>⬅️ Previous</button>
+                <button class="button" onclick="showNext()">➡️ Next</button>
+                <button class="button reset-button" onclick="resetPractice()">🏠 Start Over</button>
+            </div>
+            
+            <div class="stats" id="stats">
+                Choose a topic to begin practice
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const familyQuestions = [
+            {
+                topic: "Family & Life",
+                number: "1",
+                question: "Tell me about your family.",
+                answer: "I have 4 family members including myself. My dad is very conservative and strict. I have to observe a curfew of 10 p.m. every night, but thanks to that, I've rarely experienced anything dangerous. My mom is strict, but she has a warm heart. When I have a conflict with my dad, she always takes my side. I have a brother who is 3 years younger. He is tall at 188 cm. He thinks he looks like a Chinese actor Chow Yun-fat, but I absolutely don't think so. He has a dream of becoming an Air Force captain. My family has different personalities, but we get along quite well."
+            },
+            {
+                topic: "Family & Life",
+                number: "2",
+                question: "What are your hobbies?",
+                answer: "In my free time, I enjoy watching movies. I often go to the cinema and watch movies, not just at home. I like action movies, and recently I watched 'Heart of Stone' on NETFLIX. Watching movies is one of my stress relievers, and I go to the theater at least twice a month."
+            },
+            {
+                topic: "Family & Life",
+                number: "3",
+                question: "What are your special skills?",
+                answer: "I majored in French and have no problem communicating in French. I always got good grades in my major studies. While in school, I studied in Paris for 6 months, and now I often talk to people in French at the French conversation club. My French skills helped me understand the menu quickly when I worked at a French restaurant in Itaewon, and I was able to serve French customers professionally."
+            },
+            {
+                topic: "Family & Life",
+                number: "4",
+                question: "What is your life motto?",
+                answer: "'Work hard, and play hard' is my life motto. I'm passionate about everything and do my best. Even if I work for a long time, I don't get easily tired because a wonderful holiday or vacation is waiting for me. Enjoying every moment is a way not to waste my life. I take on a lot of challenges and don't get too frustrated with failures because there are still plenty of things that I can challenge."
+            },
+            {
+                topic: "Family & Life",
+                number: "5",
+                question: "How do you relieve your stress?",
+                answer: "Actually, I'm not easily stressed because I'm an easygoing person. However, when I get stressed, I have a special drink. A flight attendant at Cathay Pacific told me how to make it, and it is made by mixing tomato juice and vinegar. The taste is strange at first, but give it a try! After drinking it, I feel much better and relaxed."
+            },
+            {
+                topic: "Family & Life",
+                number: "6",
+                question: "I wonder how you take care of your health.",
+                answer: "I don't enjoy taking time to exercise. I usually use stairs instead of elevators or escalators. Also, I don't lie down on holidays except when I sleep at night. I avoid alcohol and try to have regular meals. Sometimes, when I feel weak, I have health supplement food like red ginseng."
+            }
+        ];
+
+        const majorQuestions = [
+            {
+                topic: "Major & School",
+                number: "1",
+                question: "What is your major?",
+                answer: "I majored in French Language and Literature and minored in Psychology."
+            },
+            {
+                topic: "Major & School",
+                number: "2",
+                question: "Why did you choose this major?",
+                answer: "I started learning French as my second foreign language in high school and was captivated by its romantic pronunciation. Additionally, reading Maupassant's short stories in high school piqued my interest in French literature."
+            },
+            {
+                topic: "Major & School",
+                number: "3",
+                question: "What did you learn from your major?",
+                answer: "I studied various aspects of literature, including poetry and novels, as well as the French language and culture."
+            },
+            {
+                topic: "Major & School",
+                number: "4",
+                question: "What was your favorite class?",
+                answer: "I particularly enjoyed French novels and still vividly remember the class where we analyzed Marcel Proust's 'In Search of Lost Time.'"
+            },
+            {
+                topic: "Major & School",
+                number: "5",
+                question: "Do you think your studies at school would be helpful when you work as a flight attendant?",
+                answer: "My studies in French literature helped me understand Western culture. French people highly value manners, and as a flight attendant, I am expected to provide top-notch service. My understanding of diverse cultures equips me with the skills to offer exceptional service to passengers."
+            },
+            {
+                topic: "Major & School",
+                number: "6",
+                question: "Tell me about your Psychology studies.",
+                answer: "I majored in Psychology, inspired by a film about the complexities of the human mind. In college, I studied various areas, including cognitive and social psychology. The most memorable experience was studying geriatric psychology, where we learned about the psychological challenges faced by the elderly. This sparked my interest in mental health and well-being across all stages of life."
+            },
+            {
+                topic: "Major & School",
+                number: "7",
+                question: "Tell me about your school life.",
+                answer: "Except for my senior year, when I had to focus on preparing for employment, I was actively involved in the French drama club."
+            },
+            {
+                topic: "Major & School",
+                number: "8",
+                question: "What did you do in the French drama club?",
+                answer: "We performed at the school festival, and my most memorable performance was 'Waiting for Godot,' which required extensive practice with my club mates."
+            },
+            {
+                topic: "Major & School",
+                number: "9",
+                question: "What did you learn from your club experience?",
+                answer: "Through these experiences, I was able to learn the importance of collaboration, becoming more sociable, and discovering the joy of teamwork."
+            },
+            {
+                topic: "Major & School",
+                number: "10",
+                question: "Tell me about your experience with the English newspaper.",
+                answer: "I was involved in the university's English newspaper. As a reporter, I covered campus events and improved my writing and communication skills. Working closely with the editor and other reporters taught me the value of teamwork, especially when meeting tight deadlines. One memorable experience was collaborating on a special issue, where I learned how to stay focused and work efficiently under pressure as part of a team."
+            }
+        ];
+
+        let allQuestions = [];
+        let currentQuestions = [];
+        let currentIndex = -1;
+        let currentTopic = 'family';
+        let isFlipped = false;
+
+        function initializeQuestions() {
+            allQuestions = [...familyQuestions, ...majorQuestions];
+            currentTopic = 'family';
+            currentQuestions = [...familyQuestions];
+            
+            // Set initial active button
+            document.addEventListener('DOMContentLoaded', function() {
+                const familyButton = document.querySelector('.topic-button');
+                if (familyButton) {
+                    familyButton.classList.add('active');
+                }
+            });
+            
+            resetPractice();
+        }
+
+        function selectTopic(topic) {
+            currentTopic = topic;
+            
+            // Update active button
+            document.querySelectorAll('.topic-button').forEach(btn => btn.classList.remove('active'));
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                // Fallback for initialization
+                document.querySelector(`[onclick="selectTopic('${topic}')"]`).classList.add('active');
+            }
+            
+            // Set current questions based on topic
+            switch(topic) {
+                case 'family':
+                    currentQuestions = [...familyQuestions];
+                    break;
+                case 'major':
+                    currentQuestions = [...majorQuestions];
+                    break;
+            }
+            
+            resetPractice();
+        }
+
+        function playClickSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(700, audioContext.currentTime);
+                oscillator.frequency.setValueAtTime(500, audioContext.currentTime + 0.1);
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.2);
+            } catch (error) {
+                // Silent fail
+            }
+        }
+
+        function flipCard() {
+            if (currentIndex >= 0) {
+                const flashcard = document.getElementById('flashcard');
+                flashcard.classList.toggle('flipped');
+                isFlipped = !isFlipped;
+                playClickSound();
+            }
+        }
+
+        function updateButtonStates() {
+            const previousButton = document.getElementById('previousButton');
+            
+            if (currentIndex <= 0) {
+                previousButton.disabled = true;
+            } else {
+                previousButton.disabled = false;
+            }
+        }
+
+        function showNext() {
+            playClickSound();
+            
+            if (currentIndex >= currentQuestions.length - 1) {
+                alert("All cards completed! Please click 'Start Over' to restart.");
+                return;
+            }
+
+            currentIndex++;
+            displayCard();
+        }
+
+        function showPrevious() {
+            playClickSound();
+            
+            if (currentIndex <= 0) {
+                return;
+            }
+
+            currentIndex--;
+            displayCard();
+        }
+
+        function displayCard() {
+            const currentQuestion = currentQuestions[currentIndex];
+            const cardInner = document.getElementById('cardInner');
+            const flashcard = document.getElementById('flashcard');
+            
+            // Reset flip state
+            flashcard.classList.remove('flipped');
+            isFlipped = false;
+            
+            // Update card content
+            const cardFront = cardInner.querySelector('.card-front');
+            const cardBack = cardInner.querySelector('.card-back');
+            
+            cardFront.innerHTML = `
+                <div class="question-number">${currentQuestion.topic} Q${currentQuestion.number}</div>
+                <div class="question-text">${currentQuestion.question}</div>
+                <div style="margin-top: 30px; padding: 15px; background: #fff3cd; border-radius: 10px; border: 2px dashed #ffc107;">
+                    <strong>💡 Click the card to see the answer!</strong>
+                </div>
+            `;
+            
+            cardBack.innerHTML = `
+                <div class="question-number">${currentQuestion.topic} Q${currentQuestion.number}</div>
+                <div style="margin-bottom: 20px; font-weight: bold; color: #28a745;">✅ ANSWER:</div>
+                <div class="answer-text">${currentQuestion.answer.replace(/\n/g, '<br><br>')}</div>
+                <div style="margin-top: 20px; padding: 10px; background: #e3f2fd; border-radius: 8px; font-size: 0.9em; color: #1976d2;">
+                    Click again to go back to the question
+                </div>
+            `;
+            
+            updateButtonStates();
+            updateStats();
+        }
+
+        function resetPractice() {
+            playClickSound();
+            
+            currentIndex = -1;
+            isFlipped = false;
+            
+            const cardInner = document.getElementById('cardInner');
+            const flashcard = document.getElementById('flashcard');
+            
+            flashcard.classList.remove('flipped');
+            
+            const cardFront = cardInner.querySelector('.card-front');
+            const cardBack = cardInner.querySelector('.card-back');
+            
+            cardFront.innerHTML = '<div class="placeholder-text">Click "Next" to start practice!</div>';
+            cardBack.innerHTML = '<div class="placeholder-text">Click the card to flip!</div>';
+            
+            updateButtonStates();
+            updateStats();
+        }
+
+        function updateStats() {
+            const stats = document.getElementById('stats');
+            const topicName = currentTopic === 'family' ? 'Family & Life' : 'Major & School';
+            
+            if (currentIndex >= 0) {
+                const progress = currentIndex + 1;
+                stats.textContent = `${topicName} Topic • Card ${progress} of ${currentQuestions.length}`;
+            } else {
+                stats.textContent = `${topicName} Topic • ${currentQuestions.length} cards available`;
+            }
+        }
+
+        // Initialize the application
+        initializeQuestions();
+    </script>
+</body>
+</html>
